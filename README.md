@@ -1,2 +1,5 @@
-# PokeDecks
-Poke Decks in Kotlin
+# Random Pokemon Picker
+
+## This app will pick up a random pokemon for you by pressing "Get" button.
+
+https://user-images.githubusercontent.com/71237103/133727880-8fa592a7-9521-45fd-b4f9-6bf3e96e09d1.gif

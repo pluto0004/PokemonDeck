@@ -4,6 +4,7 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 import java.io.IOException
@@ -18,9 +19,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         btn.setOnClickListener {
-            // push the button then get the data from API
-            var randomNum = (0..400).random().toString()
-            HitAPITask().execute("https://pokeapi.co/api/v2/pokemon/$randomNum")
+            val randomNum = (0..400).random().toString()
+
+            // set to Imageview using Picasso
+            Picasso.get()
+                .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$randomNum.png")
+                .resize(500, 500)
+                .into(pokePic)
+
+            // get pokemon name from poke API
+            HitAPITask().execute(
+                "https://pokeapi.co/api/v2/pokemon/$randomNum"
+            )
         }
     }
 
@@ -29,26 +39,25 @@ class MainActivity : AppCompatActivity() {
         private val TAG = "API"
 
         override fun doInBackground(vararg params: String?): String {
-            val apiResult = StringBuffer()
+            val pokeName = StringBuffer()
 
 
             try {
-                val url = URL(params[0])
+                val pokeUrl = URL(params[0])
+
                 // API
-                val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
+                val connection: HttpURLConnection = pokeUrl.openConnection() as HttpURLConnection
+
                 val response = connection.responseCode
                 Log.d(TAG, "API: The response code was $response")
 
                 connection.inputStream.buffered().reader().use {
-                    apiResult.append(it.readText())
-                    Log.d("CHECK", apiResult.toString())
+                    pokeName.append(it.readText())
+                    Log.d("CHECK", pokeName.toString())
 
                 }
 
-                // from here parsing json
-                val jsonText = apiResult.toString()
-
-                return jsonText
+                return pokeName.toString()
 
             } catch (e: Exception) {
                 val errorMessage: String = when (e) {
@@ -70,7 +79,16 @@ class MainActivity : AppCompatActivity() {
             if (result == null) return
             val parentJsonObj = JSONObject(result)
 
-            textView.text = parentJsonObj.getString("name")
+            val pokeId = parentJsonObj.getString("id")
+            val pokeName = parentJsonObj.getString("name").uppercase()
+            val pokeWeight = parentJsonObj.getString("weight")
+
+            id.text = "ID: $pokeId"
+            name.text = "Name: $pokeName"
+            weight.text = "Weight: $pokeWeight kg"
+
         }
+
+
     }
 }

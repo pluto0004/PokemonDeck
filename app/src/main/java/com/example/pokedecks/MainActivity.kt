@@ -41,15 +41,19 @@ class MainActivity : AppCompatActivity() {
                 try {
                     repository.loadPokemon(randomNum)
 
-                    id.text = useCase.postExecute(repository.pokeName.toString(), "id")
-                    name.text = useCase.postExecute(repository.pokeName.toString(), "name")
-                    weight.text =
-                        useCase.postExecute(repository.pokeName.toString(), "weight") + "kg"
+                    val pokeId = useCase.postExecute(repository.pokeName.toString(), "id")
+                    val pokeName = useCase.postExecute(repository.pokeName.toString(), "name")
+                    val pokeWeight =
+                        useCase.postExecute(repository.pokeName.toString(), "weight")
                     Picasso.get()
                         .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$randomNum.png")
                         .placeholder(R.mipmap.ic_launcher_round)
                         .resize(200, 200)
                         .into(pokePic)
+
+                    id.text = "ID: $pokeId"
+                    name.text = pokeName
+                    weight.text = "$pokeWeight kg"
 
                     Log.d(TAG, "launch done")
 

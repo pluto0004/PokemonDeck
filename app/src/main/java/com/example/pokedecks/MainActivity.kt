@@ -31,38 +31,34 @@ class MainActivity : AppCompatActivity() {
         val repository = Repository()
         val useCase = UseCase()
 
-
-
         btn.setOnClickListener {
             val randomNum = (0..400).random().toString()
 
             lifecycleScope.launch {
                 // reset here??
                 repository.pokeName.setLength(0)
+
                 try {
                     repository.loadPokemon(randomNum)
 
-                    val pokeId = useCase.postExecute(repository.pokeName.toString(), "id")
-                    val pokeName = useCase.postExecute(repository.pokeName.toString(), "name")
-                    val pokeWeight = useCase.postExecute(repository.pokeName.toString(), "weight")
+                    id.text = useCase.postExecute(repository.pokeName.toString(), "id")
+                    name.text = useCase.postExecute(repository.pokeName.toString(), "name")
+                    weight.text =
+                        useCase.postExecute(repository.pokeName.toString(), "weight") + "kg"
                     Picasso.get()
                         .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$randomNum.png")
                         .placeholder(R.mipmap.ic_launcher_round)
                         .resize(200, 200)
                         .into(pokePic)
 
-                    id.text = pokeId
-                    name.text = pokeName
-                    weight.text = pokeWeight
                     Log.d(TAG, "launch done")
+
                 } catch (e: Exception) {
                     e.printStackTrace()
                     showError()
                     Log.d(TAG, "request failed")
                 }
-
             }
-
         }
     }
 
@@ -72,7 +68,7 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-
+    // still try to understand this
     private fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

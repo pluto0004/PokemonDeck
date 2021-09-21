@@ -15,8 +15,6 @@ class Repository {
     suspend fun loadPokemon(randomNum: String) = withContext(Dispatchers.IO) {
         try {
             val pokeUrl = URL("https://pokeapi.co/api/v2/pokemon/$randomNum")
-
-            // API
             val connection: HttpURLConnection = pokeUrl.openConnection() as HttpURLConnection
 
             val response = connection.responseCode

@@ -2,7 +2,6 @@ package com.example.pokedecks
 
 import org.json.JSONObject
 
-
 class UseCase {
     fun postExecute(pokemon: String, tag: String): String {
         val parentJsonObj = JSONObject(pokemon)

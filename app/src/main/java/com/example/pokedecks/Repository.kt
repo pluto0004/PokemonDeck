@@ -10,9 +10,9 @@ import java.net.URL
 
 class Repository {
     private val TAG = "Repository"
-    val pokeName = StringBuffer()
 
     suspend fun loadPokemon(randomNum: String) = withContext(Dispatchers.IO) {
+        val pokeName = StringBuffer()
         try {
             val pokeUrl = URL("https://pokeapi.co/api/v2/pokemon/$randomNum")
             val connection: HttpURLConnection = pokeUrl.openConnection() as HttpURLConnection
@@ -23,7 +23,6 @@ class Repository {
             connection.inputStream.buffered().reader().use {
                 pokeName.append(it.readText())
                 Log.d("CHECK", pokeName.toString())
-
             }
 
         } catch (e: Exception) {
@@ -39,6 +38,6 @@ class Repository {
             }
             Log.e(TAG, errorMessage)
         }
+        pokeName.toString()
     }
-
 }

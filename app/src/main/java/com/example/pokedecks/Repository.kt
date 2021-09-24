@@ -27,8 +27,8 @@ class Repository {
 
         } catch (e: Exception) {
             val errorMessage: String = when (e) {
-                is MalformedURLException -> "downloadXML: Invalid URL ${e.message}"
-                is IOException -> "downloadXML: IO Exception reading data ${e.message}"
+                is MalformedURLException -> "loadPokemon: Invalid URL ${e.message}"
+                is IOException -> "loadPokemon: IO Exception reading data ${e.message}"
                 is SecurityException -> {
                     e.printStackTrace()
                     "Security exception. Need permission ${e.message}"

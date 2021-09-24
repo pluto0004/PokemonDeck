@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         val useCase = UseCase()
 
         btn.setOnClickListener {
-            val randomNum = (0..400).random().toString()
+            val randomNum = (1..400).random().toString()
             if (!networkCheck.isOnline(this)) {
                 Snackbar.make(parentLayout, "No Internet", Snackbar.LENGTH_LONG)
                     .show()
@@ -30,10 +30,12 @@ class MainActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 try {
-                    val pokeId = useCase.generatePokemonDetails(randomNum, "id")
-                    val pokeName = useCase.generatePokemonDetails(randomNum, "name")
+                    useCase.getPokemon(randomNum)
+
+                    val pokeId = useCase.generateDetails("id")
+                    val pokeName = useCase.generateDetails("name")
                     val pokeWeight =
-                        useCase.generatePokemonDetails(randomNum, "weight")
+                        useCase.generateDetails("weight")
                     Picasso.get()
                         .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$randomNum.png")
                         .placeholder(R.mipmap.ic_launcher_round)
@@ -41,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                         .into(pokePic)
 
                     id.text = "ID: $pokeId"
-                    name.text = pokeName
+                    name.text = pokeName.toString()
                     weight.text = "$pokeWeight kg"
 
                     Log.d(TAG, "launch done")

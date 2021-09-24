@@ -5,10 +5,10 @@ import org.json.JSONObject
 
 class UseCase {
     private val TAG = "UseCase"
-    suspend fun generatePokemonDetails(randomNum: String, tag: String): String {
-        val repository = Repository()
-        val pokemonEntity = PokemonEntity()
+    val pokemonEntity = PokemonEntity()
 
+    suspend fun getPokemon(randomNum: String) {
+        val repository = Repository()
         val pokemon = JSONObject(repository.loadPokemon(randomNum))
 
         pokemonEntity.id = pokemon.getString("id")
@@ -16,7 +16,9 @@ class UseCase {
         pokemonEntity.weight = pokemon.getString("weight")
 
         Log.d(TAG, pokemonEntity.id)
+    }
 
+    fun generateDetails(tag: String): String{
         return when (tag) {
             "id" -> pokemonEntity.id
             "name" -> pokemonEntity.name

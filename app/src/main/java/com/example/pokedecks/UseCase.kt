@@ -1,6 +1,5 @@
 package com.example.pokedecks
 
-import android.util.Log
 import org.json.JSONObject
 
 class UseCase {
@@ -16,12 +15,10 @@ class UseCase {
         // store pokemon name from the API response for the second API call
         for(i in 0 until limit){
             val pokemonEntity = PokemonEntity()
-            Log.d(TAG, i.toString())
             pokemonEntity.name = list.getJSONObject(i).getString("name")
             pokemonEntity.id = (i + 1).toString()
             applications.add(pokemonEntity)
         }
-        Log.d(TAG, applications.toString())
 
         return applications
     }
@@ -31,14 +28,23 @@ class UseCase {
         val details = JSONObject(pokemonDetails.loadDetails(name))
 
         for(pokemon in applications){
+            var length =details.getJSONArray("types").length()
+            var typesArr = details.getJSONArray("types")
+
             if(pokemon.name == name){
                 pokemon.weight = details.getString("weight")
                 pokemon.height = details.getString("height")
                 pokemon.image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${details.getString("id")}.png"
-                Log.d("getDetails", pokemon.toString())
+
+                // Types can be more then 1 type
+                for(i in 0 until length){
+                    pokemon.type.add(typesArr.getJSONObject(i).getJSONObject("type").getString("name"))
+                }
             }
-                    }
+        }
     }
+
+
 
 
 }

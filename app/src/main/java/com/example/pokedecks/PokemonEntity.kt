@@ -6,6 +6,7 @@ class PokemonEntity {
     var weight: String = ""
     var height: String = ""
     var image: String = ""
+    val type: ArrayList<String> = arrayListOf()
 
     override fun toString(): String {
         return """
@@ -14,6 +15,7 @@ class PokemonEntity {
             weight = $weight
             height = $height
             image = $image
+            type = $type
         """.trimIndent()
     }
 }

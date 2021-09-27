@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.pokemon_record.*
-import java.net.URL
+
 
 private val TAG = "Adapter"
 
@@ -30,19 +29,52 @@ class Adapter(private val pokemonList: ArrayList<PokemonEntity>):
         holder.pokeWeight.setText("${currentItem.weight} kg")
         holder.pokeHeight.setText("${currentItem.height} cm")
 
-        Log.d(TAG, currentItem.weight)
-        Log.d(TAG, currentItem.image)
+        // ToDo: Find the way to improve here(loop?)
+        if (currentItem.type.size > 1){
+            setType(holder.pokemonType1, currentItem.type[0])
+            setType(holder.pokemonType2, currentItem.type[1])
+
+        }else{
+            setType(holder.pokemonType1, currentItem.type[0])
+            holder.pokemonType2.visibility = View.INVISIBLE
+        }
 
         Picasso.get()
             .load(currentItem.image)
             .resize(200,200)
             .placeholder(R.mipmap.ic_launcher_round)
             .into(holder.pokemonImage)
-
     }
 
     override fun getItemCount(): Int {
         return pokemonList.size
+    }
+
+    fun setType(pokemonType:Chip, type:String){
+        pokemonType.setText(type.replaceFirstChar { it.uppercase() })
+        Log.d("Type", R.color.grass.toString())
+
+        // ToDo: Find the way to improve here
+        when(type){
+            "grass" -> pokemonType.setChipBackgroundColorResource(R.color.grass)
+            "poison" -> pokemonType.setChipBackgroundColorResource(R.color.poison)
+            "fire" -> pokemonType.setChipBackgroundColorResource(R.color.fire)
+            "water" -> pokemonType.setChipBackgroundColorResource(R.color.water)
+            "bug" -> pokemonType.setChipBackgroundColorResource(R.color.bug)
+            "ghost" -> pokemonType.setChipBackgroundColorResource(R.color.ghost)
+            "flying" -> pokemonType.setChipBackgroundColorResource(R.color.flying)
+            "dragon" -> pokemonType.setChipBackgroundColorResource(R.color.dragon)
+            "normal" -> pokemonType.setChipBackgroundColorResource(R.color.normal)
+            "electric" -> pokemonType.setChipBackgroundColorResource(R.color.electric)
+            "ground" -> pokemonType.setChipBackgroundColorResource(R.color.ground)
+            "fairy" -> pokemonType.setChipBackgroundColorResource(R.color.fairy)
+            "rock" -> pokemonType.setChipBackgroundColorResource(R.color.rock)
+            "psychic" -> pokemonType.setChipBackgroundColorResource(R.color.psychic)
+            "fighting" -> pokemonType.setChipBackgroundColorResource(R.color.fighting)
+            "ice" -> pokemonType.setChipBackgroundColorResource(R.color.ice)
+
+            else -> pokemonType.setChipBackgroundColorResource(R.color.white)
+        }
     }
 
 
@@ -52,6 +84,8 @@ class Adapter(private val pokemonList: ArrayList<PokemonEntity>):
         val pokeWeight: TextView = itemView.findViewById(R.id.tv_pokeWeight)
         val pokeHeight: TextView = itemView.findViewById(R.id.tv_pokeHeight)
         val pokemonImage: ImageView = itemView.findViewById(R.id.iv_pokemon)
+        val pokemonType1: Chip = itemView.findViewById(R.id.ch_type1)
+        val pokemonType2: Chip = itemView.findViewById(R.id.ch_type2)
     }
 
 }

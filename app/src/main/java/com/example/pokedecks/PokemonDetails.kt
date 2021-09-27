@@ -3,7 +3,6 @@ package com.example.pokedecks
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
@@ -14,18 +13,13 @@ class PokemonDetails {
 
     suspend fun loadDetails(name:String)= withContext(Dispatchers.IO) {
         val details = StringBuffer()
-        Log.d(TAG, "API: name $name")
 
         try {
             val pokeUrl = URL("https://pokeapi.co/api/v2/pokemon/$name")
             val connection: HttpURLConnection = pokeUrl.openConnection() as HttpURLConnection
 
-            val response = connection.responseCode
-            Log.d(TAG, "API: The response code was $response")
-
             connection.inputStream.buffered().reader().use {
                 details.append(it.readText())
-                Log.d(TAG, details.toString())
             }
 
             connection.disconnect()

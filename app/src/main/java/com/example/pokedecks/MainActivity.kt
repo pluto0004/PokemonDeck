@@ -12,7 +12,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
 
-
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
     private lateinit var newRecyclerView: RecyclerView
@@ -23,7 +22,6 @@ class MainActivity : AppCompatActivity() {
 
         val dividerItemDecoration = DividerItemDecoration(this, LinearLayoutManager(this).orientation)
 
-
         newRecyclerView = rv_pokemon
         newRecyclerView.layoutManager = LinearLayoutManager(this)
         newRecyclerView.setHasFixedSize(true)
@@ -32,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         val parentLayout: View = findViewById(android.R.id.content)
         val networkCheck = NetworkUtils()
         val useCase = UseCase()
-        val limit = 10
+        val limit = 151
 
             if (!networkCheck.isOnline(this)) {
                 Snackbar.make(parentLayout, "No Internet", Snackbar.LENGTH_LONG)
@@ -41,8 +39,6 @@ class MainActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     try {
                         val list = useCase.getPokemon(limit)
-                        Log.d(TAG, list.toString())
-
                         for(i in 0 until list.size){
                             useCase.setDetails(list[i].name)
                         }

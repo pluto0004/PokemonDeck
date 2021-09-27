@@ -8,22 +8,24 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 
-class Repository {
-    private val TAG = "Repository"
+class PokemonList {
+    private val TAG = "PokemonList"
 
-    suspend fun loadPokemon(randomNum: String) = withContext(Dispatchers.IO) {
-        val pokeName = StringBuffer()
+    suspend fun loadPokemon(limit:Int) = withContext(Dispatchers.IO) {
+        val pokemonList = StringBuffer()
         try {
-            val pokeUrl = URL("https://pokeapi.co/api/v2/pokemon/$randomNum")
+            val pokeUrl = URL("https://pokeapi.co/api/v2/pokemon/?limit=${limit}")
             val connection: HttpURLConnection = pokeUrl.openConnection() as HttpURLConnection
 
             val response = connection.responseCode
             Log.d(TAG, "API: The response code was $response")
 
             connection.inputStream.buffered().reader().use {
-                pokeName.append(it.readText())
-                Log.d("CHECK", pokeName.toString())
+                pokemonList.append(it.readText())
+                Log.d(TAG, pokemonList.toString())
             }
+
+            connection.disconnect()
 
         } catch (e: Exception) {
             val errorMessage: String = when (e) {
@@ -38,6 +40,6 @@ class Repository {
             }
             Log.e(TAG, errorMessage)
         }
-        pokeName.toString()
+        pokemonList.toString()
     }
 }

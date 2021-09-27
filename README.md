@@ -1,9 +1,9 @@
 # Random Pokemon Picker
 
-### This app will pick up a random pokemon for you by pressing "GET" button.
+### This app will show the first 151 pokemon with the information of its id, name, weight, height and type(s).
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/71237103/133727880-8fa592a7-9521-45fd-b4f9-6bf3e96e09d1.gif" width="300px">
+  <img src="https://user-images.githubusercontent.com/71237103/134854947-771bb86e-8012-46bb-afa4-52fd9e8d2137.gif" width="300px">
 </p>
 
 

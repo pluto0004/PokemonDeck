@@ -1,4 +1,4 @@
-# Random Pokemon Picker
+# Pokemon Deck 1st Edition
 
 ### This app will show the first 151 pokemon with the information of its id, name, weight, height and type(s).
 

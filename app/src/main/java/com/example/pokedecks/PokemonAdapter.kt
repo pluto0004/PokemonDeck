@@ -32,6 +32,11 @@ class PokemonAdapter(
         return PokemonViewHolder(view, context)
     }
 
+    override fun onViewRecycled(holder: PokemonViewHolder) {
+        holder.recycleHolder()
+        super.onViewRecycled(holder)
+    }
+
     override fun onBindViewHolder(holderPokemon: PokemonViewHolder, position: Int) {
 
         val currentItem = pokemonList[position]
@@ -49,7 +54,6 @@ class PokemonViewHolder(
     private val binding: PokemonRecordBinding,
     private val context: Context,
 ) : RecyclerView.ViewHolder(binding.root) {
-    private val container = binding.chipsHolderLayout
 
     fun bind(pokemon: PokemonEntity) {
         binding.tvPokeId.text = context.getString(R.string.poke_id, pokemon.id)
@@ -76,6 +80,10 @@ class PokemonViewHolder(
             .resize(200, 200)
             .placeholder(R.mipmap.ic_launcher_round)
             .into(binding.ivPokemon)
+    }
+
+    fun recycleHolder() {
+        binding.chipsHolderLayout.removeAllViews()
     }
 }
 

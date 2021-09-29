@@ -1,50 +1,51 @@
 package com.example.pokedecks
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
-class UseCase {
+class UseCase(
+    val pokemonList: PokemonRepository = PokemonRepository()
+) {
     private val TAG = "UseCase"
-    val applications = ArrayList<PokemonEntity>()
 
-    suspend fun getPokemon(limit: Int):ArrayList<PokemonEntity> {
-        val pokemonList = PokemonList()
+    suspend fun getPokemon(limitOfPokemonsToLoad: Int) = withContext(Dispatchers.IO) {
+        val applications = mutableListOf<PokemonEntity>()
 
         // get the pokemon list from API
-        val list = JSONObject(pokemonList.loadPokemon(limit)).getJSONArray("results")
+        val list =
+            JSONObject(pokemonList.loadPokemon(limitOfPokemonsToLoad)).getJSONArray("results")
 
         // store pokemon name from the API response for the second API call
-        for(i in 0 until limit){
+        for (i in 0 until limitOfPokemonsToLoad) {
             val pokemonEntity = PokemonEntity()
             pokemonEntity.name = list.getJSONObject(i).getString("name")
             pokemonEntity.id = (i + 1).toString()
+
+            setDetails(pokemonEntity)
+
             applications.add(pokemonEntity)
         }
 
-        return applications
+        applications
     }
 
-    suspend fun setDetails(name: String) {
-        val pokemonDetails = PokemonDetails()
-        val details = JSONObject(pokemonDetails.loadDetails(name))
+    private suspend fun setDetails(pokemon: PokemonEntity) {
+        val pokemonDetails = PokemonDetailsRepository()
+        val details = JSONObject(pokemonDetails.loadDetails(pokemon.name))
 
-        for(pokemon in applications){
-            var length =details.getJSONArray("types").length()
-            var typesArr = details.getJSONArray("types")
+        var length = details.getJSONArray("types").length()
+        var typesArr = details.getJSONArray("types")
 
-            if(pokemon.name == name){
-                pokemon.weight = details.getString("weight")
-                pokemon.height = details.getString("height")
-                pokemon.image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${details.getString("id")}.png"
+        pokemon.weight = details.getString("weight")
+        pokemon.height = details.getString("height")
+        pokemon.image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+            details.getString("id")
+        }.png"
 
-                // Types can be more then 1 type
-                for(i in 0 until length){
-                    pokemon.type.add(typesArr.getJSONObject(i).getJSONObject("type").getString("name"))
-                }
-            }
+        // Types can be more then 1 type
+        for (i in 0 until length) {
+            pokemon.type.add(typesArr.getJSONObject(i).getJSONObject("type").getString("name"))
         }
     }
-
-
-
-
 }

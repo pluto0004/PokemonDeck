@@ -8,26 +8,30 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 
-class PokemonDetails {
-    private val TAG = "PokemonDetails"
+class PokemonRepository {
+    private val TAG = "PokemonRepository"
 
-    suspend fun loadDetails(name:String)= withContext(Dispatchers.IO) {
-        val details = StringBuffer()
+    suspend fun loadPokemon(limitOfPokemonsToLoad:Int) = withContext(Dispatchers.IO) {
+        val pokemonList = StringBuffer()
 
         try {
-            val pokeUrl = URL("https://pokeapi.co/api/v2/pokemon/$name")
+            val pokeUrl = URL("https://pokeapi.co/api/v2/pokemon/?limit=${limitOfPokemonsToLoad}")
             val connection: HttpURLConnection = pokeUrl.openConnection() as HttpURLConnection
 
+            val response = connection.responseCode
+            Log.d(TAG, "API: The response code was $response")
+
             connection.inputStream.buffered().reader().use {
-                details.append(it.readText())
+                pokemonList.append(it.readText())
+                Log.d(TAG, pokemonList.toString())
             }
 
             connection.disconnect()
 
         } catch (e: Exception) {
             val errorMessage: String = when (e) {
-                is MalformedURLException -> "getDetail: Invalid URL ${e.message}"
-                is IOException -> "getDetail: IO Exception reading data ${e.message}"
+                is MalformedURLException -> "loadPokemon: Invalid URL ${e.message}"
+                is IOException -> "loadPokemon: IO Exception reading data ${e.message}"
                 is SecurityException -> {
                     e.printStackTrace()
                     "Security exception. Need permission ${e.message}"
@@ -37,6 +41,6 @@ class PokemonDetails {
             }
             Log.e(TAG, errorMessage)
         }
-        details.toString()
+        pokemonList.toString()
     }
-    }
+}

@@ -8,12 +8,16 @@
 
     <ImageView
         android:id="@+id/iv_pokemon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pokeId"
+        app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -21,20 +25,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_pokemon"
-        app:layout_constraintTop_toTopOf="@+id/iv_pokemon"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="TextView" />
+
 
     <TextView
         android:id="@+id/tv_pokeName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp"
+        android:layout_marginTop="32dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/iv_pokemon"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pokeId"
+        app:layout_constraintTop_toTopOf="@+id/iv_pokemon"
         tools:text="TextView" />
 
     <TextView
@@ -44,8 +50,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_pokemon"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pokeName"
+        app:layout_constraintStart_toEndOf="@id/iv_pokemon"
+        app:layout_constraintTop_toBottomOf="@id/tv_pokeName"
         tools:text="TextView" />
 
     <TextView
@@ -55,38 +61,22 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_pokemon"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pokeWeight"
+        app:layout_constraintStart_toEndOf="@id/iv_pokemon"
+        app:layout_constraintTop_toBottomOf="@id/tv_pokeWeight"
         tools:text="TextView" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/ch_type1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/chips_holder_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_pokeHeight"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_pokeId"
-        app:layout_constraintTop_toTopOf="@+id/tv_pokeId" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/tv_pokeName"
+        app:layout_constraintTop_toTopOf="@+id/tv_pokeName" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/ch_type2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_pokeId"
-        app:layout_constraintTop_toBottomOf="@+id/ch_type1" />
-
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/cg_typeGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="242dp"
-        tools:layout_editor_absoluteY="74dp">
-
-    </com.google.android.material.chip.ChipGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

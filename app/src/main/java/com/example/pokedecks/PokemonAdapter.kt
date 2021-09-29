@@ -57,7 +57,7 @@ class PokemonViewHolder(
         binding.tvPokeWeight.text = context.getString(R.string.poke_weight, pokemon.weight)
         binding.tvPokeHeight.text = context.getString(R.string.poke_height, pokemon.height)
 
-        //TODO: There is a bug. The types are saved correctly but some of them are not be able to displayed properly...because the view is recycled?
+        //TODO: There is a bug.
         for (i in 0 until pokemon.type.size) {
             val chipView: View = LayoutInflater.from(context).inflate(R.layout.chip, null)
             chipView.layoutParams = ConstraintLayout.LayoutParams(

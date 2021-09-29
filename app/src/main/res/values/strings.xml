@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">First 151 Pokemon Deck</string>
+    <string name="poke_id">%s</string>
+    <string name="poke_name">%s</string>
+    <string name="poke_weight">%s kg</string>
+    <string name="poke_height">%s cm</string>
+    <string name="poke_type">%s</string>
 </resources>

@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
     private lateinit var newRecyclerView: RecyclerView
 
-    private val limitOfPokemonsToLoad = 9
+    private val limitOfPokemonsToLoad = 151
 
     private val networkCheck = NetworkUtils()
     private val useCase = UseCase()
@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
                     loadingBar.visibility = View.VISIBLE
                     val list = useCase.getPokemon(limitOfPokemonsToLoad)
 
+                    //switch back to UI thread
                     newRecyclerView.adapter = PokemonAdapter(context, list)
 
                     Log.d(TAG, "launch done")
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 } catch (e: Exception) {
                     e.printStackTrace()
                     showError()
-                    Log.d(TAG, "request failed")
+                    Log.e(TAG, "request failed", e)
                 }
                 loadingBar.visibility = View.GONE
             }

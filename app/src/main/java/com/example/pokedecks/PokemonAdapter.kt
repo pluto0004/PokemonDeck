@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.chip.view.*
 
 
-private val TAG = "PokemonAdapter"
+private const val TAG = "PokemonAdapter"
 
 class PokemonAdapter(
     private val context: Context,
@@ -25,20 +25,20 @@ class PokemonAdapter(
         parent: ViewGroup,
         viewType: Int
     ): PokemonViewHolder {
-        Log.d("ViewType", viewType.toString())
 
-        var view = PokemonRecordBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = PokemonRecordBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return PokemonViewHolder(view, context)
+        return PokemonViewHolder(view, context, parent)
     }
 
-    override fun onViewRecycled(holder: PokemonViewHolder) {
-        holder.recycleHolder()
-        super.onViewRecycled(holder)
+    override fun onViewRecycled(holderPokemon: PokemonViewHolder) {
+        Log.d(TAG, "onViewRecycled called with $holderPokemon")
+        holderPokemon.recycleHolder()
+        super.onViewRecycled(holderPokemon)
     }
 
     override fun onBindViewHolder(holderPokemon: PokemonViewHolder, position: Int) {
-
+        Log.d(TAG, "onBindViewHolder called with $holderPokemon")
         val currentItem = pokemonList[position]
         Log.d(TAG, currentItem.toString())
 
@@ -53,23 +53,26 @@ class PokemonAdapter(
 class PokemonViewHolder(
     private val binding: PokemonRecordBinding,
     private val context: Context,
+    private val parent: ViewGroup
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(pokemon: PokemonEntity) {
         binding.tvPokeId.text = context.getString(R.string.poke_id, pokemon.id)
-        binding.tvPokeName.text = context.getString(R.string.poke_name, pokemon.name)
+        binding.tvPokeName.text =
+            context.getString(R.string.poke_name, pokemon.name.replaceFirstChar { it.uppercase() })
         binding.tvPokeWeight.text = context.getString(R.string.poke_weight, pokemon.weight)
         binding.tvPokeHeight.text = context.getString(R.string.poke_height, pokemon.height)
 
-        //TODO: There is a bug.
         for (i in 0 until pokemon.type.size) {
-            val chipView: View = LayoutInflater.from(context).inflate(R.layout.chip, null)
+            val chipView: View = LayoutInflater.from(context).inflate(R.layout.chip, parent, false)
             chipView.layoutParams = ConstraintLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
-            Log.d("Type", chipView.ch.id.toString())
 
-            chipView.ch.text = context.getString(R.string.poke_type, pokemon.type[i])
+            chipView.ch.text = context.getString(
+                R.string.poke_type,
+                pokemon.type[i]
+            )
             setType(chipView.ch, pokemon.type[i])
 
             binding.chipsHolderLayout.addView(chipView)
@@ -87,9 +90,11 @@ class PokemonViewHolder(
     }
 }
 
-
 fun setType(pokemonType: Chip, type: String) {
-    pokemonType.setText(type.replaceFirstChar { it.uppercase() })
-    val typeEnum = PokemonType.valueOf(type.replaceFirstChar { it.uppercase() })
-    pokemonType.setChipBackgroundColorResource(typeEnum.color)
+    try {
+        val typeEnum = PokemonType.valueOf(type)
+        pokemonType.setChipBackgroundColorResource(typeEnum.color)
+    } catch (e: Exception) {
+        Log.e(TAG, "No value of $type", e)
+    }
 }

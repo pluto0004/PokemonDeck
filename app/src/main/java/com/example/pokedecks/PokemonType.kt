@@ -17,6 +17,7 @@ enum class PokemonType(val color: Int) {
     Psychic(R.color.psychic),
     Fighting(R.color.fighting),
     Ice(R.color.ice),
+    Steel(R.color.steel),
 }
 
 

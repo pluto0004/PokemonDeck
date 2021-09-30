@@ -5,9 +5,8 @@ import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
 class UseCase(
-    val pokemonList: PokemonRepository = PokemonRepository()
+    private val pokemonList: PokemonRepository = PokemonRepository()
 ) {
-    private val TAG = "UseCase"
 
     suspend fun getPokemon(limitOfPokemonsToLoad: Int) = withContext(Dispatchers.IO) {
         val applications = mutableListOf<PokemonEntity>()
@@ -23,10 +22,8 @@ class UseCase(
             pokemonEntity.id = (i + 1).toString()
 
             setDetails(pokemonEntity)
-
             applications.add(pokemonEntity)
         }
-
         applications
     }
 
@@ -34,8 +31,8 @@ class UseCase(
         val pokemonDetails = PokemonDetailsRepository()
         val details = JSONObject(pokemonDetails.loadDetails(pokemon.name))
 
-        var length = details.getJSONArray("types").length()
-        var typesArr = details.getJSONArray("types")
+        val length = details.getJSONArray("types").length()
+        val typesArr = details.getJSONArray("types")
 
         pokemon.weight = details.getString("weight")
         pokemon.height = details.getString("height")
@@ -45,7 +42,9 @@ class UseCase(
 
         // Types can be more then 1 type
         for (i in 0 until length) {
-            pokemon.type.add(typesArr.getJSONObject(i).getJSONObject("type").getString("name"))
+            pokemon.type.add(
+                typesArr.getJSONObject(i).getJSONObject("type").getString("name")
+                    .replaceFirstChar { it.uppercase() })
         }
     }
 }

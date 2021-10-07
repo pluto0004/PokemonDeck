@@ -29,15 +29,15 @@ class MainActivity : AppCompatActivity() {
         val context = this
 
         initRecyclerView()
-        
+
         if (!networkCheck.isOnline(this)) {
-            Snackbar.make(binding.layout, "No Internet", Snackbar.LENGTH_LONG)
+            Snackbar.make(binding.containerMain.loadingBar, "No Internet", Snackbar.LENGTH_LONG)
                 .show()
-            binding.loadingBar.visibility = View.GONE
+            binding.containerMain.loadingBar.visibility = View.GONE
         } else {
             lifecycleScope.launch {
                 try {
-                    binding.loadingBar.visibility = View.VISIBLE
+                    binding.containerMain.loadingBar.visibility = View.VISIBLE
                     val list = useCase.getPokemon(limitOfPokemonsToLoad)
 
                     //switch back to UI thread
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                     showError()
                     Log.e(TAG, "request failed", e)
                 }
-                binding.loadingBar.visibility = View.GONE
+                binding.containerMain.loadingBar.visibility = View.GONE
             }
         }
     }
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         val dividerItemDecoration =
             DividerItemDecoration(this, LinearLayoutManager(this).orientation)
 
-        newRecyclerView = binding.rvPokemon
+        newRecyclerView = binding.containerMain.rvPokemon
         newRecyclerView.layoutManager = LinearLayoutManager(this)
         newRecyclerView.setHasFixedSize(true)
         newRecyclerView.addItemDecoration(dividerItemDecoration)

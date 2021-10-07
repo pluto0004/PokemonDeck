@@ -26,8 +26,6 @@ class PokemonViewHolder(
         binding.tvPokeId.text = context.getString(R.string.poke_id, pokemon.id)
         binding.tvPokeName.text =
             context.getString(R.string.poke_name, pokemon.name.replaceFirstChar { it.uppercase() })
-        binding.tvPokeWeight.text = context.getString(R.string.poke_weight, pokemon.weight)
-        binding.tvPokeHeight.text = context.getString(R.string.poke_height, pokemon.height)
 
         for (i in 0 until pokemon.type.size) {
             val chipView: View = LayoutInflater.from(context).inflate(R.layout.chip, parent, false)
@@ -49,7 +47,7 @@ class PokemonViewHolder(
         Picasso.get()
             .load(pokemon.image)
             .resize(200, 200)
-            .placeholder(R.mipmap.ic_launcher_round)
+            .placeholder(R.drawable.placeholder)
             .into(binding.ivPokemon)
     }
 
@@ -60,9 +58,16 @@ class PokemonViewHolder(
 
 class PokemonAdapter(
     private val context: Context,
-    private val pokemonList: List<PokemonEntity>
+    private var pokemonList: List<PokemonEntity>
 ) :
     RecyclerView.Adapter<PokemonViewHolder>() {
+
+    fun getPokemon(position: Int): PokemonEntity? {
+        Log.d(TAG, "getPokemon called with $position")
+        Log.d(TAG, "getPokemon called with $pokemonList")
+        return if (pokemonList.isNotEmpty()) pokemonList[position] else null
+    }
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -75,7 +80,6 @@ class PokemonAdapter(
     }
 
     override fun onViewRecycled(holderPokemon: PokemonViewHolder) {
-        Log.d(TAG, "onViewRecycled called with $holderPokemon")
         holderPokemon.recycleHolder()
         super.onViewRecycled(holderPokemon)
     }
@@ -91,7 +95,9 @@ class PokemonAdapter(
     override fun getItemCount(): Int {
         return pokemonList.size
     }
+
 }
+
 
 fun setType(pokemonType: Chip, type: String) {
     try {

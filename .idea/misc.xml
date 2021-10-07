@@ -10,9 +10,12 @@
         <entry key="app/src/main/res/drawable/pokeball.xml" value="0.31875" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3145833333333333" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.3145833333333333" />
+        <entry key="app/src/main/res/layout/activity_pokemon_details.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/layout/activity_search.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/layout/chip.xml" value="0.1" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.3145833333333333" />
         <entry key="app/src/main/res/layout/content_main2.xml" value="0.3145833333333333" />
+        <entry key="app/src/main/res/layout/content_pokemon_details.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/layout/pokemo_record.xml" value="0.2764102564102564" />
         <entry key="app/src/main/res/layout/pokemon_record.xml" value="0.31302083333333336" />
         <entry key="app/src/main/res/layout/type_chip.xml" value="0.1" />

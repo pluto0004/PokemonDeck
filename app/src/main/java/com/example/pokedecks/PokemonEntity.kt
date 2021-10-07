@@ -1,7 +1,11 @@
 package com.example.pokedecks
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 //toString
 //Equals & HasCode
+@Parcelize
 data class PokemonEntity(
     var id: String = "",
     var name: String = "",
@@ -9,4 +13,4 @@ data class PokemonEntity(
     var height: String = "",
     var image: String = "",
     val type: ArrayList<String> = arrayListOf()
-)
+) : Parcelable

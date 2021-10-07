@@ -3,6 +3,7 @@ package com.example.pokedecks
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -16,6 +17,8 @@ class MainActivity : BaseActivity(), RecyclerItemClickListener.OnRecyclerClickLi
     private val TAG = "MainActivity"
     private lateinit var newRecyclerView: RecyclerView
     private lateinit var binding: ActivityMainBinding
+
+    // TODO: is it okay to declare list here?
     private lateinit var list: MutableList<PokemonEntity>
 
     private val limitOfPokemonsToLoad = 151
@@ -96,6 +99,17 @@ class MainActivity : BaseActivity(), RecyclerItemClickListener.OnRecyclerClickLi
             startActivity(intent)
         }
         Snackbar.make(view, "Long tap at position: $position", Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.d(TAG, "onOptionsItemSelected called")
+        return when (item.itemId) {
+            R.id.action_search -> {
+                startActivity(Intent(this, SearchActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
 

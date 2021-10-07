@@ -8,36 +8,36 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pokedecks.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
     private lateinit var newRecyclerView: RecyclerView
+    private lateinit var binding: ActivityMainBinding
 
     private val limitOfPokemonsToLoad = 151
 
     private val networkCheck = NetworkUtils()
     private val useCase = UseCase()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        initRecyclerView()
-
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val context = this
 
-        val parentLayout: View = findViewById(android.R.id.content)
-
+        initRecyclerView()
+        
         if (!networkCheck.isOnline(this)) {
-            Snackbar.make(parentLayout, "No Internet", Snackbar.LENGTH_LONG)
+            Snackbar.make(binding.layout, "No Internet", Snackbar.LENGTH_LONG)
                 .show()
+            binding.loadingBar.visibility = View.GONE
         } else {
             lifecycleScope.launch {
                 try {
-                    loadingBar.visibility = View.VISIBLE
+                    binding.loadingBar.visibility = View.VISIBLE
                     val list = useCase.getPokemon(limitOfPokemonsToLoad)
 
                     //switch back to UI thread
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                     showError()
                     Log.e(TAG, "request failed", e)
                 }
-                loadingBar.visibility = View.GONE
+                binding.loadingBar.visibility = View.GONE
             }
         }
     }
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         val dividerItemDecoration =
             DividerItemDecoration(this, LinearLayoutManager(this).orientation)
 
-        newRecyclerView = rv_pokemon
+        newRecyclerView = binding.rvPokemon
         newRecyclerView.layoutManager = LinearLayoutManager(this)
         newRecyclerView.setHasFixedSize(true)
         newRecyclerView.addItemDecoration(dividerItemDecoration)

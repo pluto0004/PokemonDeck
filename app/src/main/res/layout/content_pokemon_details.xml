@@ -10,14 +10,18 @@
     tools:ignore="SpeakableTextPresentCheck">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/steel"
         app:cardCornerRadius="8dp"
         app:contentPadding="8dp">
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:orientation="vertical">
 
             <TextView
@@ -25,7 +29,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/pokemon_photo_detail"
@@ -39,16 +45,20 @@
                 android:id="@+id/pokemon_weight_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="6dp"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/pokemon_height_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="TextView" />
+                android:layout_margin="6dp"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textSize="16dp" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

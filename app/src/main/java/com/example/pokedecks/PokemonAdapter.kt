@@ -23,6 +23,7 @@ class PokemonViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(pokemon: PokemonEntity) {
+//        binding.tvPokeId.text = context.getString(R.string.poke_id, pokemon.id)
         binding.tvPokeId.text = context.getString(R.string.poke_id, pokemon.id)
         binding.tvPokeName.text =
             context.getString(R.string.poke_name, pokemon.name.replaceFirstChar { it.uppercase() })
@@ -57,7 +58,7 @@ class PokemonViewHolder(
 }
 
 class PokemonAdapter(
-    private val context: Context,
+    private val context: MainActivity,
     private var pokemonList: List<PokemonEntity>
 ) :
     RecyclerView.Adapter<PokemonViewHolder>() {

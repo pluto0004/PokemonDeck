@@ -10,7 +10,9 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.14739583333333334" />
+        <entry key="app/src/main/res/layout/content_pokemon_details.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/pokemo_record.xml" value="0.2764102564102564" />
+        <entry key="app/src/main/res/layout/pokemon_record.xml" value="0.335" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.335" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.228125" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.228125" />

@@ -13,15 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PokeDecks">
         <activity
-            android:name=".MainActivity2"
-            android:exported="true"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/Theme.PokeDecks.NoActionBar" />
-        <activity
             android:name=".PokemonDetailsActivity"
             android:exported="true"
             android:label="@string/title_activity_pokemon_details"
-            android:theme="@style/Theme.PokeDecks.NoActionBar" />
+            android:theme="@style/Theme.PokeDecks.NoActionBar"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".SearchActivity"
             android:exported="true"
@@ -35,7 +31,6 @@
             android:theme="@style/Theme.PokeDecks.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

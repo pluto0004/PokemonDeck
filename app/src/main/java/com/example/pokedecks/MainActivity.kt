@@ -13,24 +13,30 @@ import com.example.pokedecks.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
-class MainActivity : BaseActivity(), RecyclerItemClickListener.OnRecyclerClickListener {
+
+class MainActivity : BaseActivity(),
+    RecyclerItemClickListener.OnRecyclerClickListener {
     private val TAG = "MainActivity"
+
     private lateinit var newRecyclerView: RecyclerView
     private lateinit var binding: ActivityMainBinding
 
-    // TODO: is it okay to declare list here?
     private lateinit var list: MutableList<PokemonEntity>
-
     private val limitOfPokemonsToLoad = 151
 
     private val networkCheck = NetworkUtils()
     private val useCase = UseCase()
+    private val prefConfig = PrefConfig()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG, "onCreate starts with $savedInstanceState")
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val context = this
+        activateToolBar(false)
+
+        val pokeList: MutableList<PokemonEntity>? = prefConfig.readListFromPref(this)
 
         initRecyclerView()
         binding.containerMain.rvPokemon.addOnItemTouchListener(
@@ -41,6 +47,7 @@ class MainActivity : BaseActivity(), RecyclerItemClickListener.OnRecyclerClickLi
             )
         )
 
+        // network check
         if (!networkCheck.isOnline(this)) {
             Snackbar.make(binding.containerMain.loadingBar, "No Internet", Snackbar.LENGTH_LONG)
                 .show()
@@ -49,10 +56,15 @@ class MainActivity : BaseActivity(), RecyclerItemClickListener.OnRecyclerClickLi
             lifecycleScope.launch {
                 try {
                     binding.containerMain.loadingBar.visibility = View.VISIBLE
-                    list = useCase.getPokemon(limitOfPokemonsToLoad)
+
+                    // if there is already a list in preference, use it. Otherwise call API
+                    list = pokeList ?: useCase.getPokemon(limitOfPokemonsToLoad)
+
+                    // store list to shared preference to avoid API call again
+                    prefConfig.writeListInPref(applicationContext, list)
 
                     //switch back to UI thread
-                    newRecyclerView.adapter = PokemonAdapter(context, list)
+                    newRecyclerView.adapter = PokemonAdapter(this@MainActivity, list)
 
                     Log.d(TAG, "launch done")
 
@@ -64,6 +76,7 @@ class MainActivity : BaseActivity(), RecyclerItemClickListener.OnRecyclerClickLi
                 binding.containerMain.loadingBar.visibility = View.GONE
             }
         }
+
     }
 
     private fun initRecyclerView() {
@@ -111,5 +124,6 @@ class MainActivity : BaseActivity(), RecyclerItemClickListener.OnRecyclerClickLi
             else -> super.onOptionsItemSelected(item)
         }
     }
+
 }
 

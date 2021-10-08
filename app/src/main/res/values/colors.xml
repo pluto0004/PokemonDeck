@@ -24,4 +24,5 @@
     <color name="rock">#33302F2F</color>
     <color name="ice">#3300FFFF</color>
     <color name="steel">#33505151</color>
+    <color name="cardbackground">#32F01C0D</color>
 </resources>

@@ -1,38 +1,44 @@
 package com.example.pokedecks
 
 import android.content.Context
-import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
+import android.util.Log
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import java.io.File
+import java.io.FileWriter
+import java.io.IOException
 import java.lang.reflect.Type
 
-private const val LIST_KEY = "LIST_KEY"
+private const val POKEMON_LIST = "pokemonList"
 
-// TODO: Is the way of using preference correct?? is there any other way?
 class PrefConfig {
-
-    fun writeListInPref(
+    fun writeFile(
         context: Context, list: MutableList<PokemonEntity>
     ) {
-        val gson = Gson()
-        val jsonString = gson.toJson(list)
+        try {
+            val file = File(context.filesDir, POKEMON_LIST)
+            
+            FileWriter(file).use {
+                val gson = GsonBuilder().create()
+                gson.toJson(list, it)
+            }
 
-        val pref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-
-        pref.edit().putString(LIST_KEY, jsonString).apply()
+        } catch (e: IOException) {
+            Log.e("writeFile is failed", e.toString())
+        }
     }
 
-    fun readListFromPref(context: Context): MutableList<PokemonEntity>? {
-        val pref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val jsonString = pref.getString(LIST_KEY, "")
-        return if (jsonString == null) {
-            null
-        } else {
-            val gson = Gson()
-            val type: Type = object : TypeToken<MutableList<PokemonEntity>>() {}.type
+    fun readFile(context: Context): MutableList<PokemonEntity>? {
+        val gson = Gson()
+        val type: Type = object : TypeToken<MutableList<PokemonEntity>>() {}.type
 
-            gson.fromJson<MutableList<PokemonEntity>?>(jsonString, type)
+        return try {
+            val file = File(context.filesDir, POKEMON_LIST).bufferedReader().readLine()
+            gson.fromJson(file, type)
+        } catch (e: IOException) {
+            Log.e("readFile is failed", e.toString())
+            null
         }
     }
 }

@@ -12,6 +12,6 @@ class SearchActivity : BaseActivity() {
 
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        activateToolBar(true)
+        activateToolBar(true, binding.toolbar)
     }
 }

@@ -5,6 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 //toString
 //Equals & HasCode
+
 @Parcelize
 data class PokemonEntity(
     var id: String = "",

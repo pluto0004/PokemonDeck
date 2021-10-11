@@ -29,14 +29,14 @@ class MainActivity : BaseActivity(),
     private val prefConfig = PrefConfig()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate starts with $savedInstanceState")
+        Log.d(TAG, "onCreate starts with $limitOfPokemonsToLoad")
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        activateToolBar(false)
+        activateToolBar(false, binding.toolbar)
 
-        val pokeList: MutableList<PokemonEntity>? = prefConfig.readListFromPref(this)
+        val pokeList: MutableList<PokemonEntity>? = prefConfig.readFile(this)
 
         initRecyclerView()
         binding.containerMain.rvPokemon.addOnItemTouchListener(
@@ -58,10 +58,12 @@ class MainActivity : BaseActivity(),
                     binding.containerMain.loadingBar.visibility = View.VISIBLE
 
                     // if there is already a list in preference, use it. Otherwise call API
-                    list = pokeList ?: useCase.getPokemon(limitOfPokemonsToLoad)
+                    list = (if (pokeList != null && pokeList.size == 151) {
+                        pokeList
+                    } else useCase.getPokemon(limitOfPokemonsToLoad))
 
                     // store list to shared preference to avoid API call again
-                    prefConfig.writeListInPref(applicationContext, list)
+                    prefConfig.writeFile(applicationContext, list)
 
                     //switch back to UI thread
                     newRecyclerView.adapter = PokemonAdapter(this@MainActivity, list)
@@ -97,7 +99,11 @@ class MainActivity : BaseActivity(),
 
     override fun onItemClick(view: View, position: Int) {
         Log.d(TAG, "onItemClick: Clicked")
-        Snackbar.make(view, "Normal tap at position: $position", Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(
+            view,
+            "Long tap to see the detail of ${list[position].name.replaceFirstChar { it.uppercase() }}",
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 
     override fun onItemLongClick(view: View, position: Int) {
@@ -111,7 +117,6 @@ class MainActivity : BaseActivity(),
             }
             startActivity(intent)
         }
-        Snackbar.make(view, "Long tap at position: $position", Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

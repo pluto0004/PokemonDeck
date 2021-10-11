@@ -15,7 +15,7 @@ class PokemonDetailsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPokemonDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        activateToolBar(true)
+        activateToolBar(true, binding.toolbar)
 
         val pokemon = intent.getParcelableExtra<PokemonEntity>(POKEMON_TRANSFER) as PokemonEntity
 

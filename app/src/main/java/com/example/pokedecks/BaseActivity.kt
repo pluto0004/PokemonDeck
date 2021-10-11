@@ -7,16 +7,11 @@ internal const val POKEMON_TRANSFER = "POKEMON_TRANSFER"
 
 open class BaseActivity : AppCompatActivity() {
     private val TAG = "BaseActivity"
-//    private lateinit var binding: ActivityMainBinding
 
-    internal fun activateToolBar(enableHome: Boolean) {
+    internal fun activateToolBar(enableHome: Boolean, toolbar: androidx.appcompat.widget.Toolbar) {
         Log.d(TAG, "activate toolbar")
 
-        //TODO: Find way to use viewBinding here
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(enableHome)
-
-//        setSupportActionBar(binding.toolbar)
-//        supportActionBar?.setDisplayHomeAsUpEnabled(enableHome)
     }
 }

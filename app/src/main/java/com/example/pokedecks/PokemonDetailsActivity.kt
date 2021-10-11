@@ -21,8 +21,10 @@ class PokemonDetailsActivity : BaseActivity() {
 
         binding.containerPokemon.pokemonNameDetail.text =
             pokemon.name.replaceFirstChar { it.uppercase() }
-        binding.containerPokemon.pokemonHeightDetail.text = pokemon.height
-        binding.containerPokemon.pokemonWeightDetail.text = pokemon.weight
+        binding.containerPokemon.pokemonHeightDetail.text =
+            this.getString(R.string.poke_height_detail, pokemon.height)
+        binding.containerPokemon.pokemonWeightDetail.text =
+            this.getString(R.string.poke_weight_detail, pokemon.weight)
         Picasso.get()
             .load(pokemon.image)
             .error(R.drawable.placeholder)

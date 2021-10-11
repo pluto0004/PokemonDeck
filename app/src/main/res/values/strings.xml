@@ -4,6 +4,8 @@
     <string name="poke_name">%s</string>
     <string name="poke_weight">%s kg</string>
     <string name="poke_height">%s cm</string>
+    <string name="poke_weight_detail">Weight: %s kg</string>
+    <string name="poke_height_detail">Height: %s cm</string>
     <string name="poke_type">%s</string>
     <string name="title_activity_main">MainActivity</string>
     <!-- Strings used for fragments for navigation -->

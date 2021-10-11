@@ -9,6 +9,7 @@ import android.widget.SearchView
 import androidx.preference.PreferenceManager
 import com.example.pokedecks.databinding.ActivitySearchBinding
 
+// TODO: After the first search, the list is updated to newList that only contains filtered pokemon. If I try to search one more time, the search is done with the filtered list...I need to fix this so that the search is always done with the original list.
 class SearchActivity : BaseActivity() {
     private val TAG = "SearchActivity"
     private var searchView: SearchView? = null

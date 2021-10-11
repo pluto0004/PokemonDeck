@@ -23,7 +23,6 @@ class PokemonViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(pokemon: PokemonEntity) {
-//        binding.tvPokeId.text = context.getString(R.string.poke_id, pokemon.id)
         binding.tvPokeId.text = context.getString(R.string.poke_id, pokemon.id)
         binding.tvPokeName.text =
             context.getString(R.string.poke_name, pokemon.name.replaceFirstChar { it.uppercase() })
@@ -64,8 +63,6 @@ class PokemonAdapter(
     RecyclerView.Adapter<PokemonViewHolder>() {
 
     fun getPokemon(position: Int): PokemonEntity? {
-        Log.d(TAG, "getPokemon called with $position")
-        Log.d(TAG, "getPokemon called with $pokemonList")
         return if (pokemonList.isNotEmpty()) pokemonList[position] else null
     }
 
@@ -88,7 +85,7 @@ class PokemonAdapter(
     override fun onBindViewHolder(holderPokemon: PokemonViewHolder, position: Int) {
         Log.d(TAG, "onBindViewHolder called with $holderPokemon")
         val currentItem = pokemonList[position]
-        Log.d(TAG, currentItem.toString())
+        Log.d(TAG, "this is pokemonList $pokemonList")
 
         holderPokemon.bind(currentItem)
     }

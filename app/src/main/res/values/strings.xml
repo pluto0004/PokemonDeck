@@ -16,4 +16,5 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_pokemon_details">PokemonDetailsActivity</string>
+    <string name="searchable_hint">Enter pokemon type</string>
 </resources>

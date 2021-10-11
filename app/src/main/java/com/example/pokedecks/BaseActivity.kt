@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 
 internal const val POKEMON_TRANSFER = "POKEMON_TRANSFER"
+internal const val POKEMON_QUERY = "POKEMON_QUERY"
 
 open class BaseActivity : AppCompatActivity() {
     private val TAG = "BaseActivity"

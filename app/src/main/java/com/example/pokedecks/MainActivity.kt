@@ -3,9 +3,11 @@ package com.example.pokedecks
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -99,6 +101,8 @@ class MainActivity : BaseActivity(),
 
     override fun onItemClick(view: View, position: Int) {
         Log.d(TAG, "onItemClick: Clicked")
+
+
         Snackbar.make(
             view,
             "Long tap to see the detail of ${list[position].name.replaceFirstChar { it.uppercase() }}",
@@ -119,6 +123,14 @@ class MainActivity : BaseActivity(),
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        Log.d(TAG, "onCreateOptionsMenu called")
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Log.d(TAG, "onOptionsItemSelected called")
         return when (item.itemId) {
@@ -128,6 +140,26 @@ class MainActivity : BaseActivity(),
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume: Starts")
+
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val queryResult = sharedPref.getString(POKEMON_QUERY, "")
+
+        if (queryResult != null && queryResult.isNotEmpty()) {
+            Log.d(TAG, list.toString())
+            list =
+                list.filter { it.type.contains(queryResult.replaceFirstChar { it.uppercase() }) } as MutableList<PokemonEntity>
+
+            newRecyclerView.adapter = PokemonAdapter(this@MainActivity, list)
+        } else {
+            newRecyclerView.adapter = PokemonAdapter(this@MainActivity, list)
+        }
+        Log.d(TAG, "onResume: ends")
+
     }
 
 }

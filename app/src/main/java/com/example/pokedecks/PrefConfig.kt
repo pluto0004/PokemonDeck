@@ -5,7 +5,6 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.CoroutineScope
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -15,7 +14,7 @@ private const val POKEMON_LIST = "pokemonList"
 
 class PrefConfig {
     fun writeFile(
-        context: CoroutineScope, list: MutableList<PokemonEntity>
+        context: Context, list: MutableList<PokemonEntity>
     ) {
         try {
             val file = File(context.filesDir, POKEMON_LIST)

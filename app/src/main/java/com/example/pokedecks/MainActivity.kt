@@ -60,7 +60,7 @@ class MainActivity : BaseActivity(),
 
                     if (pokeList.isEmpty()) {
                         pokeList = useCase.getPokemon(limitOfPokemonsToLoad)
-                        prefConfig.writeFile(this, pokeList)
+                        prefConfig.writeFile(applicationContext, pokeList)
                     }
 
                     //switch back to UI thread

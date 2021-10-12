@@ -4,10 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
+import android.widget.SearchView
 import androidx.lifecycle.lifecycleScope
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -112,7 +111,8 @@ class MainActivity : BaseActivity(),
 
     override fun onItemLongClick(view: View, position: Int) {
         Log.d(TAG, "onItemLongClick: Clicked")
-        val pokemon = PokemonAdapter(this, list).getPokemon(position)
+//        val pokemon = PokemonAdapter(this, list).getPokemon(position)
+        val pokemon = list.get(position)
 
         if (pokemon != null) {
             Log.d(TAG, "intent created: Clicked")
@@ -123,44 +123,48 @@ class MainActivity : BaseActivity(),
         }
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         Log.d(TAG, "onCreateOptionsMenu called")
 
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Log.d(TAG, "onOptionsItemSelected called")
-        return when (item.itemId) {
-            R.id.action_search -> {
-                startActivity(Intent(this, SearchActivity::class.java))
-                true
+        val menuItem = menu.findItem(R.id.action_search)
+        val searchView = menuItem?.actionView as SearchView?
+        searchView?.queryHint = "Enter Pokemon Type"
+
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Log.d(TAG, ".onQueryTextSubmit: called with $query")
+
+                if (query != null && query.isNotEmpty()) {
+                    val newList =
+                        list.filter { it.type.contains(query.replaceFirstChar { it.uppercase() }) } as MutableList<PokemonEntity>
+
+                    newRecyclerView.adapter = PokemonAdapter(this@MainActivity, newList)
+                } else {
+                    newRecyclerView.adapter = PokemonAdapter(this@MainActivity, list)
+                }
+                searchView.clearFocus()
+
+                return true
             }
-            else -> super.onOptionsItemSelected(item)
-        }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+
+        })
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume: Starts")
 
-        val sharedPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-        val queryResult = sharedPref.getString(POKEMON_QUERY, "")
-
-        if (queryResult != null && queryResult.isNotEmpty()) {
-            Log.d(TAG, list.toString())
-            list =
-                list.filter { it.type.contains(queryResult.replaceFirstChar { it.uppercase() }) } as MutableList<PokemonEntity>
-
-            newRecyclerView.adapter = PokemonAdapter(this@MainActivity, list)
-        } else {
-            newRecyclerView.adapter = PokemonAdapter(this@MainActivity, list)
-        }
-        Log.d(TAG, "onResume: ends")
-
     }
-
 }
 

@@ -58,16 +58,21 @@ class PokemonViewHolder(
 
 class PokemonAdapter(
     private val context: MainActivity,
-    private var pokemonList: List<PokemonEntity>
+    private val masterList: List<PokemonEntity>
 ) :
     RecyclerView.Adapter<PokemonViewHolder>() {
+    private var pokemonList = masterList
 
     fun getPokemon(position: Int): PokemonEntity? {
         return if (pokemonList.isNotEmpty()) pokemonList[position] else null
     }
 
-    fun getPokemonList(): MutableList<PokemonEntity> {
+    fun getCurrentList(): MutableList<PokemonEntity> {
         return pokemonList as MutableList<PokemonEntity>
+    }
+
+    fun getMasterList(): MutableList<PokemonEntity> {
+        return masterList as MutableList<PokemonEntity>
     }
 
     fun updateList(newPokemonList: List<PokemonEntity>) {

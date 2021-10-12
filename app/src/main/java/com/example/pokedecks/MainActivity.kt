@@ -29,6 +29,7 @@ class MainActivity : BaseActivity(),
     private val useCase = UseCase()
     private val prefConfig = PrefConfig()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate starts with $limitOfPokemonsToLoad")
         super.onCreate(savedInstanceState)
@@ -37,7 +38,7 @@ class MainActivity : BaseActivity(),
         setContentView(binding.root)
         activateToolBar(false, binding.toolbar)
 
-        var pokeList: MutableList<PokemonEntity> = prefConfig.readFile(this)
+        var pokeList = prefConfig.readFile(this)
 
         initRecyclerView()
         binding.containerMain.rvPokemon.addOnItemTouchListener(
@@ -114,6 +115,7 @@ class MainActivity : BaseActivity(),
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         Log.d(TAG, "onCreateOptionsMenu called")
+        val masterList = pokemonAdapter.getMasterList()
 
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -125,14 +127,13 @@ class MainActivity : BaseActivity(),
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.d(TAG, ".onQueryTextSubmit: called with $query")
-                val currentList = pokemonAdapter.getPokemonList()
+                var currentList = pokemonAdapter.getCurrentList()
 
                 if (query != null && query.isNotEmpty()) {
-                    val newList =
-                        currentList.filter { it -> it.type.contains(query.replaceFirstChar { it.uppercase() }) } as MutableList<PokemonEntity>
+                    currentList =
+                        masterList.filter { it -> it.type.contains(query.replaceFirstChar { it.uppercase() }) } as MutableList<PokemonEntity>
 
-                    pokemonAdapter.updateList(newList)
+                    pokemonAdapter.updateList(currentList)
                 } else {
                     pokemonAdapter.updateList(currentList)
                 }

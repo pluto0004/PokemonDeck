@@ -5,6 +5,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.CoroutineScope
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -14,11 +15,11 @@ private const val POKEMON_LIST = "pokemonList"
 
 class PrefConfig {
     fun writeFile(
-        context: Context, list: MutableList<PokemonEntity>
+        context: CoroutineScope, list: MutableList<PokemonEntity>
     ) {
         try {
             val file = File(context.filesDir, POKEMON_LIST)
-            
+
             FileWriter(file).use {
                 val gson = GsonBuilder().create()
                 gson.toJson(list, it)
@@ -29,7 +30,7 @@ class PrefConfig {
         }
     }
 
-    fun readFile(context: Context): MutableList<PokemonEntity>? {
+    fun readFile(context: Context): MutableList<PokemonEntity> {
         val gson = Gson()
         val type: Type = object : TypeToken<MutableList<PokemonEntity>>() {}.type
 
@@ -38,7 +39,7 @@ class PrefConfig {
             gson.fromJson(file, type)
         } catch (e: IOException) {
             Log.e("readFile is failed", e.toString())
-            null
+            mutableListOf()
         }
     }
 }

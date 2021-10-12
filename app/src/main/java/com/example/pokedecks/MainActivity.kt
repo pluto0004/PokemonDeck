@@ -21,8 +21,8 @@ class MainActivity : BaseActivity(),
 
     private lateinit var newRecyclerView: RecyclerView
     private lateinit var binding: ActivityMainBinding
+    private lateinit var pokemonAdapter: PokemonAdapter
 
-    private lateinit var list: MutableList<PokemonEntity>
     private val limitOfPokemonsToLoad = 151
 
     private val networkCheck = NetworkUtils()
@@ -37,7 +37,7 @@ class MainActivity : BaseActivity(),
         setContentView(binding.root)
         activateToolBar(false, binding.toolbar)
 
-        val pokeList: MutableList<PokemonEntity>? = prefConfig.readFile(this)
+        var pokeList: MutableList<PokemonEntity> = prefConfig.readFile(this)
 
         initRecyclerView()
         binding.containerMain.rvPokemon.addOnItemTouchListener(
@@ -58,16 +58,14 @@ class MainActivity : BaseActivity(),
                 try {
                     binding.containerMain.loadingBar.visibility = View.VISIBLE
 
-                    // if there is already a list in preference, use it. Otherwise call API
-                    list = (if (pokeList != null && pokeList.size == 151) {
-                        pokeList
-                    } else useCase.getPokemon(limitOfPokemonsToLoad))
-
-                    // store list to shared preference to avoid API call again
-                    prefConfig.writeFile(applicationContext, list)
+                    if (pokeList.isEmpty()) {
+                        pokeList = useCase.getPokemon(limitOfPokemonsToLoad)
+                        prefConfig.writeFile(this, pokeList)
+                    }
 
                     //switch back to UI thread
-                    newRecyclerView.adapter = PokemonAdapter(this@MainActivity, list)
+                    pokemonAdapter = PokemonAdapter(this@MainActivity, pokeList)
+                    newRecyclerView.adapter = pokemonAdapter
 
                     Log.d(TAG, "launch done")
 
@@ -100,27 +98,17 @@ class MainActivity : BaseActivity(),
 
     override fun onItemClick(view: View, position: Int) {
         Log.d(TAG, "onItemClick: Clicked")
-
-
-        Snackbar.make(
-            view,
-            "Long tap to see the detail of ${list[position].name.replaceFirstChar { it.uppercase() }}",
-            Snackbar.LENGTH_LONG
-        ).show()
     }
 
     override fun onItemLongClick(view: View, position: Int) {
         Log.d(TAG, "onItemLongClick: Clicked")
-//        val pokemon = PokemonAdapter(this, list).getPokemon(position)
-        val pokemon = list.get(position)
+        val pokemon = pokemonAdapter.getPokemon(position)
 
-        if (pokemon != null) {
-            Log.d(TAG, "intent created: Clicked")
-            val intent = Intent(this, PokemonDetailsActivity::class.java).apply {
-                putExtra(POKEMON_TRANSFER, pokemon)
-            }
-            startActivity(intent)
+        Log.d(TAG, "intent created: Clicked")
+        val intent = Intent(this, PokemonDetailsActivity::class.java).apply {
+            putExtra(POKEMON_TRANSFER, pokemon)
         }
+        startActivity(intent)
     }
 
 
@@ -138,14 +126,15 @@ class MainActivity : BaseActivity(),
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 Log.d(TAG, ".onQueryTextSubmit: called with $query")
+                val currentList = pokemonAdapter.getPokemonList()
 
                 if (query != null && query.isNotEmpty()) {
                     val newList =
-                        list.filter { it.type.contains(query.replaceFirstChar { it.uppercase() }) } as MutableList<PokemonEntity>
+                        currentList.filter { it -> it.type.contains(query.replaceFirstChar { it.uppercase() }) } as MutableList<PokemonEntity>
 
-                    newRecyclerView.adapter = PokemonAdapter(this@MainActivity, newList)
+                    pokemonAdapter.updateList(newList)
                 } else {
-                    newRecyclerView.adapter = PokemonAdapter(this@MainActivity, list)
+                    pokemonAdapter.updateList(currentList)
                 }
                 searchView.clearFocus()
 

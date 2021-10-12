@@ -66,6 +66,15 @@ class PokemonAdapter(
         return if (pokemonList.isNotEmpty()) pokemonList[position] else null
     }
 
+    fun getPokemonList(): MutableList<PokemonEntity> {
+        return pokemonList as MutableList<PokemonEntity>
+    }
+
+    fun updateList(newPokemonList: List<PokemonEntity>) {
+        pokemonList = newPokemonList
+        notifyDataSetChanged()
+    }
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -84,6 +93,7 @@ class PokemonAdapter(
 
     override fun onBindViewHolder(holderPokemon: PokemonViewHolder, position: Int) {
         Log.d(TAG, "onBindViewHolder called with $holderPokemon")
+
         val currentItem = pokemonList[position]
         Log.d(TAG, "this is pokemonList $pokemonList")
 
@@ -93,7 +103,6 @@ class PokemonAdapter(
     override fun getItemCount(): Int {
         return pokemonList.size
     }
-
 }
 
 

@@ -8,13 +8,15 @@ import android.view.View
 import androidx.core.view.GestureDetectorCompat
 import androidx.recyclerview.widget.RecyclerView
 
+private const val TAG = "RecyclerItemClick"
+
+
 class RecyclerItemClickListener(
     context: Context,
     recyclerView: RecyclerView,
     private val listener: OnRecyclerClickListener
 ) : RecyclerView.SimpleOnItemTouchListener() {
 
-    private val TAG = "RecyclerItemClick"
 
     interface OnRecyclerClickListener {
         fun onItemClick(view: View, position: Int)

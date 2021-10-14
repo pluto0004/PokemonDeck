@@ -23,32 +23,33 @@ class MainActivity : BaseActivity(),
     private lateinit var binding: ActivityMainBinding
     private lateinit var newRecyclerView: RecyclerView
     private lateinit var pokemonAdapter: PokemonAdapter
-    private val limitOfPokemonsToLoad = 151
 
+    private val limitOfPokemonsToLoad = 151
     val pokemonViewModel: PokemonViewModel by viewModels()
-    val savingList = SavingList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate starts with $limitOfPokemonsToLoad")
         super.onCreate(savedInstanceState)
-        val networkCheck = NetworkUtils()
 
+        pokemonViewModel.onlineCheck(this)
         pokemonAdapter = PokemonAdapter(this, EMPTY_POKEMON_LIST)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         activateToolBar(false, binding.toolbar)
 
+        val masterList = pokemonViewModel.readFile(applicationContext, "masterPokemonList")
+        val isOnline = pokemonViewModel.onlineCheck(applicationContext)
+
         // observe change in the pokemonList in viewModel
         pokemonViewModel.pokemonList.observe(this,
             { pokemonList ->
+                if (masterList.isEmpty()) {
+                    pokemonViewModel.writeFile(applicationContext, pokemonList, "masterPokemonList")
+                }
                 pokemonAdapter.updateList(
                     (pokemonList ?: EMPTY_POKEMON_LIST)
                 )
-                if (savingList.readFile(applicationContext, "masterPokemonList").isEmpty()) {
-                    savingList.writeFile(applicationContext, pokemonList, "masterPokemonList")
-                }
-                savingList.writeFile(applicationContext, pokemonList, "currentPokemonList")
             })
 
 
@@ -62,14 +63,7 @@ class MainActivity : BaseActivity(),
         )
 
         // network and master list check
-        val isOnline = networkCheck.isOnline(this)
-        val hasMasterExisted = savingList.readFile(
-            applicationContext,
-            "masterPokemonList"
-        ).isNotEmpty()
-
-        if (!isOnline && !hasMasterExisted
-        ) {
+        if (!isOnline && masterList.isEmpty()) {
             Snackbar.make(
                 binding.containerMain.loadingBar,
                 "Failed to load the list. Please connect to Internet",
@@ -83,12 +77,11 @@ class MainActivity : BaseActivity(),
                 try {
                     binding.containerMain.loadingBar.visibility = View.VISIBLE
 
-                    if (!hasMasterExisted) {
+                    if (masterList.isEmpty()) {
                         pokemonViewModel.downloadPokemonList(limitOfPokemonsToLoad)
-
                     } else {
                         pokemonAdapter.updateList(
-                            savingList.readFile(
+                            pokemonViewModel.readFile(
                                 applicationContext,
                                 "masterPokemonList"
                             )
@@ -97,7 +90,6 @@ class MainActivity : BaseActivity(),
 
                     //switch back to UI thread
                     newRecyclerView.adapter = pokemonAdapter
-
 
                     Log.d(TAG, "launch done")
 
@@ -164,7 +156,7 @@ class MainActivity : BaseActivity(),
 
                 if (query != null && query.isNotEmpty()) {
                     pokemonViewModel.searchQuery(
-                        savingList.readFile(
+                        pokemonViewModel.readFile(
                             applicationContext,
                             "masterPokemonList"
                         ), query

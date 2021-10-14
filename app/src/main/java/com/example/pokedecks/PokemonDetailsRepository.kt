@@ -8,11 +8,11 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 
+private const val TAG = "DetailRepo"
 
 class PokemonDetailsRepository {
-private val TAG = "DetailRepo"
 
-    suspend fun loadDetails(name:String)= withContext(Dispatchers.IO) {
+    suspend fun loadDetails(name: String) = withContext(Dispatchers.IO) {
         val details = StringBuffer()
 
         try {
@@ -40,4 +40,4 @@ private val TAG = "DetailRepo"
         }
         details.toString()
     }
-    }
+}

@@ -9,9 +9,9 @@ import android.widget.SearchView
 import androidx.preference.PreferenceManager
 import com.example.pokedecks.databinding.ActivitySearchBinding
 
+private const val TAG = "SearchActivity"
 
 class SearchActivity : BaseActivity() {
-    private val TAG = "SearchActivity"
     private var searchView: SearchView? = null
 
     private lateinit var binding: ActivitySearchBinding

@@ -5,9 +5,10 @@ import android.util.Log
 import com.example.pokedecks.databinding.ActivityPokemonDetailsBinding
 import com.squareup.picasso.Picasso
 
+private const val TAG = "PokemonDetailsActivity"
+
 class PokemonDetailsActivity : BaseActivity() {
     private lateinit var binding: ActivityPokemonDetailsBinding
-    private val TAG = "PokemonDetailsActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate: Starts")

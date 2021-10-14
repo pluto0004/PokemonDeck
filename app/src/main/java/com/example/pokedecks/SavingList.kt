@@ -13,7 +13,7 @@ import java.lang.reflect.Type
 
 private const val TAG = "SavingList"
 
-class SavingList() {
+class SavingList {
 
     fun writeFile(
         context: Context,

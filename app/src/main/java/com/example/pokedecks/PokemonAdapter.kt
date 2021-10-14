@@ -62,8 +62,6 @@ class PokemonAdapter(
 ) :
     RecyclerView.Adapter<PokemonViewHolder>() {
 
-    private val masterList = pokemonList
-
     fun getPokemon(position: Int): PokemonEntity? {
         return if (pokemonList.isNotEmpty()) pokemonList[position] else null
     }
@@ -74,7 +72,7 @@ class PokemonAdapter(
         pokemonList = newPokemonList
         notifyDataSetChanged()
     }
-    
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

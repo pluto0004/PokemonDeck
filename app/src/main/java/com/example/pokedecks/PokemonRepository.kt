@@ -8,14 +8,16 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 
-class PokemonRepository {
-    private val TAG = "PokemonRepository"
+private const val TAG = "PokemonRepository"
 
-    suspend fun loadPokemon(limitOfPokemonsToLoad:Int) = withContext(Dispatchers.IO) {
+class PokemonRepository {
+
+    suspend fun loadPokemon(limitOfPokemonsToLoad: Int) = withContext(Dispatchers.IO) {
         val pokemonList = StringBuffer()
 
         try {
-            val pokeUrl = URL("https://pokeapi.co/api/v2/pokemon/?limit=${limitOfPokemonsToLoad}")
+            val pokeUrl =
+                URL("https://pokeapi.co/api/v2/pokemon/?limit=${limitOfPokemonsToLoad}")
             val connection: HttpURLConnection = pokeUrl.openConnection() as HttpURLConnection
 
             val response = connection.responseCode

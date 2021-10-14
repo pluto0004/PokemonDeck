@@ -58,33 +58,28 @@ class PokemonViewHolder(
 
 class PokemonAdapter(
     private val context: MainActivity,
-    private val masterList: List<PokemonEntity>
+    private var pokemonList: List<PokemonEntity>,
 ) :
     RecyclerView.Adapter<PokemonViewHolder>() {
-    private var pokemonList = masterList
+
+    private val masterList = pokemonList
 
     fun getPokemon(position: Int): PokemonEntity? {
         return if (pokemonList.isNotEmpty()) pokemonList[position] else null
     }
 
-    fun getCurrentList(): MutableList<PokemonEntity> {
-        return pokemonList as MutableList<PokemonEntity>
-    }
-
-    fun getMasterList(): MutableList<PokemonEntity> {
-        return masterList as MutableList<PokemonEntity>
-    }
 
     fun updateList(newPokemonList: List<PokemonEntity>) {
+        Log.d(TAG, "updateList called")
         pokemonList = newPokemonList
         notifyDataSetChanged()
     }
-
-
+    
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): PokemonViewHolder {
+        Log.d(TAG, "list :$pokemonList")
 
         val view = PokemonRecordBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
@@ -100,7 +95,6 @@ class PokemonAdapter(
         Log.d(TAG, "onBindViewHolder called with $holderPokemon")
 
         val currentItem = pokemonList[position]
-        Log.d(TAG, "this is pokemonList $pokemonList")
 
         holderPokemon.bind(currentItem)
     }

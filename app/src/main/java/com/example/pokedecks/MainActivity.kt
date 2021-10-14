@@ -24,8 +24,8 @@ class MainActivity : BaseActivity(),
     private lateinit var newRecyclerView: RecyclerView
     private lateinit var pokemonAdapter: PokemonAdapter
 
-    private val limitOfPokemonsToLoad = 151
     val pokemonViewModel: PokemonViewModel by viewModels()
+    private val limitOfPokemonsToLoad = pokemonViewModel.limitOfPokemonsToLoad
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate starts with $limitOfPokemonsToLoad")

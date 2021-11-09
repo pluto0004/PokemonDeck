@@ -1,4 +1,4 @@
-package com.example.pokedecks
+package com.example.pokedecks.databse
 
 import android.content.ContentUris
 import android.net.Uri

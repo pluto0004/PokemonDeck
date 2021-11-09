@@ -1,4 +1,4 @@
-package com.example.pokedecks
+package com.example.pokedecks.utils
 
 import android.content.Context
 import android.net.ConnectivityManager

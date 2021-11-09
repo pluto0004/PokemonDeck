@@ -1,4 +1,4 @@
-package com.example.pokedecks
+package com.example.pokedecks.databse
 
 import android.content.ContentProvider
 import android.content.ContentValues

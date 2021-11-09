@@ -1,4 +1,4 @@
-package com.example.pokedecks
+package com.example.pokedecks.databse
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

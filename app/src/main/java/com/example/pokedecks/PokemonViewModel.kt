@@ -11,7 +11,7 @@ private const val TAG = "PokemonViewModel"
 val EMPTY_POKEMON_LIST: List<PokemonEntity> = Collections.emptyList()
 
 class PokemonViewModel : ViewModel() {
-    val limitOfPokemonsToLoad = 151
+    val limitOfPokemonsToLoad = 5
 
     private val useCase = UseCase()
     private val networkUtils = NetworkUtils()

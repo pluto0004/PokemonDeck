@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -25,11 +26,10 @@ class MainActivity : BaseActivity(),
     private lateinit var pokemonAdapter: PokemonAdapter
 
     val pokemonViewModel: PokemonViewModel by viewModels()
-    private val limitOfPokemonsToLoad = pokemonViewModel.limitOfPokemonsToLoad
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate starts with $limitOfPokemonsToLoad")
         super.onCreate(savedInstanceState)
+        val limitOfPokemonsToLoad = pokemonViewModel.limitOfPokemonsToLoad
 
         pokemonViewModel.onlineCheck(this)
         pokemonAdapter = PokemonAdapter(this, EMPTY_POKEMON_LIST)
@@ -115,8 +115,7 @@ class MainActivity : BaseActivity(),
     }
 
     private fun showError() {
-        Snackbar.make(binding.root, "Request failed", Snackbar.LENGTH_LONG)
-            .show()
+        Toast.makeText(this, "No Internet", Toast.LENGTH_LONG).show()
     }
 
     override fun onItemClick(view: View, position: Int) {
@@ -178,4 +177,5 @@ class MainActivity : BaseActivity(),
 
 
 }
+
 
